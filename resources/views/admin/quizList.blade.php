@@ -106,7 +106,17 @@
                         
                         <tr class="border-b dark:border-gray-700">
                             <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $quiz->title }}</th>
-                            <td class="px-4 py-3">{{ $quiz->status }}</td>
+                            <td class="px-4 py-3">
+                                @if($quiz->status == 'draft')
+                                    <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300">Hazırlanır</span>
+                                @endif
+                                @if($quiz->status == 'published')
+                                    <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Aktiv</span>
+                                @endif
+                                @if($quiz->status == 'passiv')
+                                    <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">Passiv</span>
+                                @endif
+                            </td>
                             <td class="px-4 py-3"></td>
                             <td class="px-4 py-3 flex items-center justify-end">
                                 <button id="apple-imac-27-dropdown-button" data-dropdown-toggle="apple-imac-27-dropdown" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">

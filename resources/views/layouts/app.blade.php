@@ -41,7 +41,6 @@
         </div>
 
         @stack('modals')
-        {{ $js }}
         @livewireScripts
     </body>
 </html>

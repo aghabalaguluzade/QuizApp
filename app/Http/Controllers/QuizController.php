@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\QuizRequest;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class QuizController extends Controller
      */
     public function index()
     {
-        $quizzes = Quiz::paginate(5);
+        $quizzes = Quiz::latest()->paginate(5);
         return view('admin.quizList', compact('quizzes'));
     }
 
@@ -27,9 +28,10 @@ class QuizController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(QuizRequest $request)
     {
-        //
+        $quiz = Quiz::create($request->validated());
+        return redirect()->route('quizzes.index');
     }
 
     /**
