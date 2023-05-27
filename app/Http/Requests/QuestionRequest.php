@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class QuizRequest extends FormRequest
+class QuestionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,18 +22,14 @@ class QuizRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
-            'finished_at' => [ 'after:'.now()]
-        ];
-    }
-
-    public function attributes(): array
-    {
-        return [
-            'title' => 'Quiz Başlığı',
-            'description' => 'Quiz Açıqlaması',
-            'finished_at' => 'Quiz Bitiş Tarixi'
+            // 'quiz_id' => ['required'],   
+            'question' => ['required', 'string'],
+            'answer1' => ['required', 'string'],
+            'answer2' => ['required', 'string'],
+            'answer3' => ['required', 'string'],
+            'answer4' => ['required', 'string'],
+            'correct_answer' => ['required', 'string'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
         ];
     }
 }

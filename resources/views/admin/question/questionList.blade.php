@@ -16,7 +16,7 @@
                     <form class="flex items-center">
                         <label for="simple-search" class="sr-only">Search</label>
                         <div class="relative w-full">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="relative inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
@@ -26,7 +26,7 @@
                     </form>
                 </div>
                 <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                    <a href="{{ route('quizzes.create') }}">
+                    <a href="{{ route('quizzes.questions.create', $quiz->id) }}">
                         <button type="button" class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                         <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
@@ -92,9 +92,13 @@
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="px-4 py-3">Quiz</th>
-                            <th scope="col" class="px-4 py-3">Status</th>
-                            <th scope="col" class="px-4 py-3">Bitiş tarixi</th>
+                            <th scope="col" class="px-4 py-3">Sual</th>
+                            <th scope="col" class="px-4 py-3">Şəkil</th>
+                            <th scope="col" class="px-4 py-3">Cavab 1</th>
+                            <th scope="col" class="px-4 py-3">Cavab 2</th>
+                            <th scope="col" class="px-4 py-3">Cavab 3</th>
+                            <th scope="col" class="px-4 py-3">Cavab 4</th>
+                            <th scope="col" class="px-4 py-3">Düzgün cavab</th>
                             <th scope="col" class="px-4 py-3">
                                 <span class="sr-only">Əməliyyatlar</span>
                             </th>
@@ -102,39 +106,37 @@
                     </thead>
                     <tbody>
 
-                    @foreach ($quizzes as $quiz)
-                        
+
+                    @foreach ($questions as $question)
+
                         <tr class="border-b dark:border-gray-700">
-                            <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $quiz->title }}</th>
-                            <td class="px-4 py-3">
-                                @if($quiz->status == 'draft')
-                                    <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300">Hazırlanır</span>
-                                @endif
-                                @if($quiz->status == 'published')
-                                    <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Aktiv</span>
-                                @endif
-                                @if($quiz->status == 'passiv')
-                                    <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">Passiv</span>
-                                @endif
-                            </td>
-                            <td class="px-4 py-3"></td>
+                            <td class="px-4 py-3">{{ $question->question }}</td>
+                            <td class="px-4 py-3">{{ $question->image }}</td>
+                            <td class="px-4 py-3">{{ $question->answer1 }}</td>
+                            <td class="px-4 py-3">{{ $question->answer2 }}</td>
+                            <td class="px-4 py-3">{{ $question->answer3 }}</td>
+                            <td class="px-4 py-3">{{ $question->answer4 }}</td>
+                            <td class="px-4 py-3">{{ $question->correct_answer }}</td>
                             <td class="px-4 py-3 flex items-center justify-end">
-                                <button id="apple-imac-27-dropdown-button" data-dropdown-toggle="apple-imac-27-dropdown" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
+                                <button id="quiz-{{ $question->id }}-dropdown-dropdown-button" data-dropdown-toggle="quiz-{{ $question->id }}-dropdown-dropdown" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
                                     <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
                                     </svg>
                                 </button>
-                                <div id="apple-imac-27-dropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="apple-imac-27-dropdown-button">
+                                <div id="quiz-{{ $question->id }}-dropdown-dropdown" class="hidden z-50 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                                    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="quiz-{{ $question->id }}-dropdown-dropdown-button">
                                         <li>
-                                            <a href="#" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Show</a>
+                                            <a href="{{ route('quizzes.questions.index', $question->id) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Show</a>
                                         </li>
                                         <li>
-                                            <a href="#" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                                            {{-- <a href="{{ route('questions.show', $question->id) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Show</a> --}}
+                                        </li>
+                                        <li>
+                                            {{-- <a href="{{ route('questions.edit',$question->id) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a> --}}
                                         </li>
                                     </ul>
                                     <div class="py-1">
-                                        <a href="#" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
+                                        <a onclick="quizDelete({{ $question->id }})" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
                                     </div>
                                 </div>
                             </td>
@@ -146,20 +148,20 @@
                 </table>
             </div>
             
-            @if ($quizzes->hasPages())
+            @if ($questions->hasPages())
                 <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
                     <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
                         Göstərilir
-                        <span class="font-semibold text-gray-900 dark:text-white">{{ $quizzes->firstItem() }}</span>
+                        <span class="font-semibold text-gray-900 dark:text-white">{{ $questions->firstItem() }}</span>
                         dən
-                        <span class="font-semibold text-gray-900 dark:text-white">{{ $quizzes->lastItem() }}</span>
+                        <span class="font-semibold text-gray-900 dark:text-white">{{ $questions->lastItem() }}</span>
 
-                        Toplam <span class="font-semibold text-gray-900 dark:text-white">{{ $quizzes->total() }}</span>
+                        Toplam <span class="font-semibold text-gray-900 dark:text-white">{{ $questions->total() }}</span>
                     </span>
                     <ul class="inline-flex items-stretch -space-x-px">
-                        @if ($quizzes->currentPage() > 1)
+                        @if ($questions->currentPage() > 1)
                             <li>
-                                <a href="{{ $quizzes->previousPageUrl() }}" class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                <a href="{{ $questions->previousPageUrl() }}" class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                     <span class="sr-only">Previous</span>
                                     <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -168,9 +170,9 @@
                             </li>
                         @endif
                         
-                        @if ($quizzes->hasMorePages())
+                        @if ($questions->hasMorePages())
                             <li>
-                                <a href="{{ $quizzes->nextPageUrl() }}" class="flex items-center justify-center h-full py-1.5 px-3 mr-0 text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                <a href="{{ $questions->nextPageUrl() }}" class="flex items-center justify-center h-full py-1.5 px-3 mr-0 text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                     <span class="sr-only">Next</span>
                                     <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10l-3.293-3.293a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
@@ -188,4 +190,45 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+    const _token = $('meta[name="csrf-token"]').attr('content');
+
+    const quizDelete = (id) => {
+        swal({
+            title: "Diqqət!",
+            text: "Silinən informasiya geri qaytarılmır, yenidən əlavə olunmaldır!",
+            icon: "warning",
+            buttons: ["İmtina et", "Sil"],
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        _token,
+                        id: id,
+                        _method: 'DELETE'
+                    },
+                    url: `quizzes/${id}`,
+                    success: function (data) {
+                        const deletedElement = document.getElementById(`quiz-${id}`);
+                        if (deletedElement) {
+                            deletedElement.remove();
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            } else {
+                swal("İmtina Edildi!");
+            }
+        });
+    }
+</script>
+
+
+
 </x-app-layout>

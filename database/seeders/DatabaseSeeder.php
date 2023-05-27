@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Quiz;
 use Database\Factories\QuizFactory;
 use Illuminate\Database\Seeder;
+use Symfony\Component\Console\Question\Question;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,9 +24,10 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         // Seeder
-        $this->call([UserSeeder::class]);
-
-        //Factory
-        Quiz::factory(10)->create();
+        $this->call([
+            UserSeeder::class,
+            QuizSeeder::class,
+            QuestionSeeder::class,
+        ]);
     }
 }

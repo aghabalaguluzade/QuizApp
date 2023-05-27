@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\CahandarController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
+use App\Http\Resources\TestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,4 +33,6 @@ Route::middleware([
 
 Route::group(['middleware' => ['auth','isAdmin'], 'prefix' => 'admin'] ,function () {
     Route::resource('quizzes',QuizController::class);
+    // Route::resource('quiz/{quiz}/questions', QuestionController::class);
+    Route::resource('quizzes.questions', QuestionController::class);
 });

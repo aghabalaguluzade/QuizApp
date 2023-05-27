@@ -24,6 +24,7 @@ class QuizFactory extends Factory
         return [
             'title' => $this->faker->sentence(rand(3, 10)),
             'description' => $this->faker->text(200),
+            'finished_at' => $this->faker->dateTimeBetween('now', '+1 week'),
         ];
     }
 }

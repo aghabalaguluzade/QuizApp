@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\QuizRequest;
 use App\Models\Quiz;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class QuizController extends Controller
@@ -14,7 +15,7 @@ class QuizController extends Controller
     public function index()
     {
         $quizzes = Quiz::latest()->paginate(5);
-        return view('admin.quizList', compact('quizzes'));
+        return view('admin.quiz.quizList', compact('quizzes'));
     }
 
     /**
@@ -22,7 +23,7 @@ class QuizController extends Controller
      */
     public function create()
     {
-        return view('admin.quizCreate');
+        return view('admin.quiz.quizCreate');
     }
 
     /**
@@ -30,7 +31,9 @@ class QuizController extends Controller
      */
     public function store(QuizRequest $request)
     {
-        $quiz = Quiz::create($request->validated());
+        $validatedData = $request->validated();
+
+        Quiz::create($validatedData);
         return redirect()->route('quizzes.index');
     }
 
@@ -39,7 +42,7 @@ class QuizController extends Controller
      */
     public function show(Quiz $quiz)
     {
-        //
+        return view('admin.quiz.quizShow', compact('quiz'));
     }
 
     /**
@@ -47,15 +50,16 @@ class QuizController extends Controller
      */
     public function edit(Quiz $quiz)
     {
-        //
+        return view('admin.quiz.quizEdit', compact('quiz'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Quiz $quiz)
+    public function update(QuizRequest $request, Quiz $quiz)
     {
-        //
+        $quiz->update($request->validated());
+        return redirect()->back();
     }
 
     /**
@@ -63,6 +67,8 @@ class QuizController extends Controller
      */
     public function destroy(Quiz $quiz)
     {
-        //
+        $quiz->delete();
+        return response()->noContent();
     }
+    
 }
